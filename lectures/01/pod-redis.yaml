@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: redis
+  name: redis
+  namespace: cassandra
+spec:
+  containers:
+  - image: nginx
+    name: redis
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: redis
+  namespace: cassandra
+  name: redis
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: redis
+status:
+  loadBalancer: {}

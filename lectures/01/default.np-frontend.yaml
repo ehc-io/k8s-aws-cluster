@@ -1,0 +1,32 @@
+# allows frontend pod to have incoming and outgoing traffic from backend pods
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      run: frontend
+  policyTypes:
+  - Egress
+  - Ingress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          run: backend
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          ns: dbspace
+
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          run: backend
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          ns: dbspace
